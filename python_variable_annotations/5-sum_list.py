@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
+"""A simple Python module with type annotations."""
 
 from typing import List
-
-"""A simple Python module with type annotations."""
 
 
 def sum_list(input_list: List[float]) -> float:
