@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """A simple Python module with type annotations."""
 
-from typing import List, Union
+from typing import Union
 
 
 def sum_mixed_list(sum_mixed_list: Union[int, float]) -> float:
