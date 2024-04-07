@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Measure the runtime"""
+"""program that measures the total execution time for wait_n(n, max_delay), and returns total_time"""
 
 import time
 import asyncio
@@ -11,5 +11,5 @@ def measure_time(n: int, max_delay: int) -> float:
     """function that measures the total execution time for wait_n(n, max_delay), and returns total_time / n"""
     start_time = time.time()
     asyncio.run(wait_n(n, max_delay))
-    end_time = time.time()
-    return (end_time - start_time) / n
+    elapsed_time = time.time() - start_time
+    return elapsed_time / n
