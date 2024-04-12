@@ -19,6 +19,6 @@ class MRUCache(BaseCaching):
         """ Get an item by key """
         if key in self.cache_data:
             returned_value = self.cache_data[key]
-            self.lru_keys.remove(key)
-            self.lru_keys.append(key)
+            self.cache_data.pop(key)
+            self.cache_data[key] = returned_value
             return returned_value
