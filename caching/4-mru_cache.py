@@ -8,6 +8,7 @@ class MRUCache(BaseCaching):
     """ LIFOCache class"""
 
     def __init__(self):
+        """ Constructor """
         super().__init__()
         self.mru_keys = []
 
@@ -30,3 +31,4 @@ class MRUCache(BaseCaching):
             self.mru_keys.remove(key)
             self.mru_keys.append(key)
             return returned_value
+        return None
