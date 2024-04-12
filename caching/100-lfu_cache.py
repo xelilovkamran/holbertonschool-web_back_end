@@ -8,7 +8,7 @@ class LFUCache(BaseCaching):
     """ LFUCache class """
 
     def __init__(self):
-        """ Override superclass """
+        """ Initialize the LFUCache instance. """
         self.lfu_elements = {}
         super().__init__()
 
@@ -21,18 +21,25 @@ class LFUCache(BaseCaching):
             self.cache_data[key] = item
             self.lfu_elements[key] += 1
         elif len(self.cache_data) >= self.MAX_ITEMS:
-            frequently_used_key = list(self.cache_data.items())[0][0]
-            for cache_item in self.lfu_elements.items():
-                if list(cache_item)[1] < self.lfu_elements[frequently_used_key]:
-                    frequently_used_key = cache_item[0]
+            # Find the least frequently used key
+            lfu_key = list(self.cache_data.keys())[0]
+            min_frequency = self.lfu_elements[lfu_key]
 
-            self.cache_data.pop(frequently_used_key)
+            for k, freq in self.lfu_elements.items():
+                if freq < min_frequency:
+                    lfu_key = k
+                    min_frequency = freq
+
+            # Remove the least frequently used key
+            self.cache_data.pop(lfu_key)
+            self.lfu_elements.pop(lfu_key)
+            print(f"DISCARD: {lfu_key}")
+
+            # Add the new key-value pair
             self.cache_data[key] = item
-
-            self.lfu_elements.pop(frequently_used_key)
             self.lfu_elements[key] = 1
-            print("DISCARD: {}".format(frequently_used_key))
         else:
+            # Add the new key-value pair
             self.cache_data[key] = item
             self.lfu_elements[key] = 1
 
