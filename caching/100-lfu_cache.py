@@ -8,7 +8,7 @@ class LFUCache(BaseCaching):
     """ LFUCache class """
 
     def __init__(self):
-        """ Override superclass __init__ """
+        """ Override superclass """
         self.lfu_elements = {}
         super().__init__()
 
@@ -39,3 +39,4 @@ class LFUCache(BaseCaching):
         if key in self.cache_data:
             self.lfu_elements[key] += 1
             return self.cache_data[key]
+        return None
