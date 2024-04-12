@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """ FIFO caching """
 
 from base_caching import BaseCaching
@@ -14,7 +15,7 @@ class FIFOCache (BaseCaching):
         """ Add an item in the cache """
         if key and item:
             self.cache_data[key] = item
-            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
                 first_item = list(self.cache_data.keys())[0]
                 print("DISCARD: {}".format(first_item))
                 self.cache_data.pop(first_item)
