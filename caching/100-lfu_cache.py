@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-""" LIFO caching """
+""" LFU caching """
 
 from base_caching import BaseCaching
 
 
 class LFUCache(BaseCaching):
-    """ LIFO cache class """
+    """ LFUCache class """
 
     def __init__(self):
         """ Override superclass __init__ """
-        super().__init__()
         self.lfu_elements = {}
+        super().__init__()
 
     def put(self, key, item):
         """ Add an item in the cache """
