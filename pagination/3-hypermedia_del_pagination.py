@@ -2,6 +2,7 @@
 """Perform deletion-resilient hypermedia pagination."""
 
 import csv
+import math
 from typing import List, Dict, Any
 
 
@@ -43,7 +44,7 @@ class Server:
         Returns:
             Dict[str, Any]: A dictionary containing the index, next index, page size, and data.
         """
-        assert 0 <= index < len(self.dataset())
+        assert 0 <= index < len(self.dataset()), "Index out of bounds"
 
         indexed_dataset = self.indexed_dataset()
         indexed_page = {}
