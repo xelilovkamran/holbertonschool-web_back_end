@@ -1,66 +1,66 @@
 #!/usr/bin/env python3
-"""Perform deletion-resilient hypermedia pagination."""
+"""
+Deletion-resilient hypermedia pagination
+"""
 
 import csv
-import math
 from typing import List, Dict, Any
 
 
 class Server:
-    """Class to paginate a database of popular baby names."""
+    """
+    Server class to paginate a database of popular baby names.
+    """
 
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
-        self.__dataset = None
-        self.__indexed_dataset = None
+        self._dataset = None
+        self._indexed_dataset = None
 
     def dataset(self) -> List[List]:
-        """Return the cached dataset."""
-        if self.__dataset is None:
-            with open(self.DATA_FILE, mode='r') as file:
+        """
+        Cached dataset method that reads and caches the dataset from a CSV file.
+        """
+        if self._dataset is None:
+            with open(self.DATA_FILE) as file:
                 reader = csv.reader(file)
-                dataset = list(reader)
-            self.__dataset = dataset[1:]
+                dataset = [row for row in reader]
+            self._dataset = dataset[1:]
 
-        return self.__dataset
+        return self._dataset
 
     def indexed_dataset(self) -> Dict[int, List]:
-        """Return a dataset indexed by sorting position, starting at 0."""
-        if self.__indexed_dataset is None:
+        """
+        Returns the dataset indexed by sorting position, starting at 0.
+        """
+        if self._indexed_dataset is None:
             dataset = self.dataset()
-            self.__indexed_dataset = {
-                i: dataset[i] for i in range(len(dataset))
+            self._indexed_dataset = {
+                i: row for i, row in enumerate(dataset[:1000])
             }
-        return self.__indexed_dataset
+        return self._indexed_dataset
 
     def get_hyper_index(self, index: int = 0, page_size: int = 10) -> Dict[str, Any]:
-        """Get hypermedia pagination data.
-
-        Args:
-            index (int): The starting index of the page.
-            page_size (int): The number of records per page.
-
-        Returns:
-            Dict[str, Any]: A dictionary containing the index, next index, page size, and data.
+        """ 
+        Returns a dictionary containing pagination information.
         """
-        assert 0 <= index < len(self.dataset()), "Index out of bounds"
+        assert 0 <= index < len(self.dataset()), "Index out of range."
 
         indexed_dataset = self.indexed_dataset()
-        indexed_page = {}
+        data = []
 
-        i = index
-        while len(indexed_page) < page_size and i < len(self.dataset()):
-            if i in indexed_dataset:
-                indexed_page[i] = indexed_dataset[i]
-            i += 1
+        current_index = index
+        while len(data) < page_size and current_index < len(self.dataset()):
+            if current_index in indexed_dataset:
+                data.append(indexed_dataset[current_index])
+            current_index += 1
 
-        data = list(indexed_page.values())
-        page_indices = indexed_page.keys()
+        next_index = current_index
 
         return {
             'index': index,
-            'next_index': max(page_indices) + 1,
+            'next_index': next_index,
             'page_size': len(data),
             'data': data
         }
