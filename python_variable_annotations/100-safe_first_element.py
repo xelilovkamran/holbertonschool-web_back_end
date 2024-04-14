@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""Module for safe_first_element function."""
 
-from typing import Iterable, Union, Any, Sequence, Optional
+from typing import Sequence, Any, Optional
 
 
-# The types of the elements of the input are not know
 def safe_first_element(lst: Sequence[Any]) -> Optional[Any]:
-    """Gets the first element of a list."""
+    """Return the first element of a list if it's not empty."""
     if lst:
         return lst[0]
-    else:
-        return None
+    return None
