@@ -7,9 +7,8 @@ from typing import List
 
 
 def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
-    """ function that returns a string
-    with certain fields redacted """
+    """ function that returns a string with certain fields redacted """
     for field in fields:
-        regex = rf'{field}=.*?{separator}'
-        message = re.sub(regex, f"{field}={redaction}{separator}", message)
+        message = re.sub(f'{field}=.*?{separator}',
+                         f"{field}={redaction}{separator}", message)
     return message
