@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""
-Program that returns a string with certain fields redacted.
-"""
+"""filtered logger"""
 
 import re
 from typing import List
 
 
 def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
-    """Function that returns a string with certain fields redacted."""
+    """Filtering values of the required fields"""
     for field in fields:
-        message = re.sub(f'{field}=.*?{separator}',
+        message = re.sub(f"{field}=.*?{separator}",
                          f"{field}={redaction}{separator}", message)
     return message
