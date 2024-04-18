@@ -30,7 +30,6 @@ class RedactingFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         msg = filter_datum(self.fields, self.REDACTION,
                            record.getMessage(), self.SEPARATOR)
-        return (self.FORMAT % {"name": record.name, "levelname":
-                               record.levelname, "asctime":
-                               self.formatTime(record, self.datefmt),
-                               "message": msg})
+        return (self.FORMAT %
+                {"name": record.name, "levelname": record.levelname, "asctime":
+                 self.formatTime(record, self.datefmt), "message": msg})
