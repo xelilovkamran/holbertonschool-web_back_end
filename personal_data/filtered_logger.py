@@ -5,8 +5,8 @@ import re
 from typing import List
 
 
-def filter_datum(fields: List[str], redaction: str, message: str, seperator: str) -> str:
+def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
     for field in fields:
-        regex = rf'{field}=.*?;'
-        message = re.sub(regex, f"{field}={redaction};", message)
+        regex = rf'{field}=.*?{separator}'
+        message = re.sub(regex, f"{field}={redaction}{separator}", message)
     return message
