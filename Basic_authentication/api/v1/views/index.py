@@ -28,4 +28,8 @@ def stats() -> str:
 
 @app_views.route("/unauthorized", methods=["GET"], strict_slashes=False)
 def unauthorized_abort():
+    """ GET /api/v1/stats
+    Abort:
+      - 401 status code
+    """
     abort(401)
