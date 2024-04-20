@@ -95,6 +95,9 @@ class BasicAuth(Auth):
         decoded_header: str = self.decode_base64_authorization_header(
             extracted_header)
 
+        if decoded_header is None:
+            return None
+
         user_credentials: Tuple[str, str] = self.extract_user_credentials(
             decoded_header)
         mail: str = user_credentials[0]
