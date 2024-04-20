@@ -18,11 +18,12 @@ class Auth:
         True if the path is not in the list
         """
 
-        for path in excluded_paths:
-            if path in path:
-                return False
         if path is None or excluded_paths is None or excluded_paths == []:
             return True
+
+        for exclude_path in excluded_paths:
+            if path.strip("/") in exclude_path.strip("/"):
+                return False
 
         return True
 
