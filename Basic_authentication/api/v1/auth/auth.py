@@ -31,13 +31,12 @@ class Auth:
     def authorization_header(self, request=None) -> str:
         """ authorization_header method that returns None
         """
-        if request is None or request.headers.get("Authorization") is None:
+        if request is None:
             return None
 
-        return request.headers.get("Authorization")
+        return request.headers.get('Authorization', None)
 
     def current_user(self, request=None) -> TypeVar('User'):
         """ current_user method that returns None
         """
-
         return request
