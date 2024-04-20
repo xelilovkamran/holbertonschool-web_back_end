@@ -31,16 +31,13 @@ class Auth:
     def authorization_header(self, request=None) -> str:
         """ authorization_header method that returns None
         """
-        print(request)
-        if not request or "Authorization" not in request.headers:
+        if request is None or request.headers.get("Authorization") is None:
             return None
+
         return request
 
     def current_user(self, request=None) -> TypeVar('User'):
         """ current_user method that returns None
         """
-
-        if request is None or not request.header.get("Authorization"):
-            return None
 
         return request
