@@ -9,7 +9,7 @@ from typing import List, TypeVar
 class Auth:
     """ Auth class for the API
     """
-    def __init__(self) -> None:
+    def __init__(self):
         """ Constructor of the Auth class
         """
         
