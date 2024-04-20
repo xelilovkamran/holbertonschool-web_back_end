@@ -17,7 +17,14 @@ class Auth:
         """ require_auth method that returns
         True if the path is not in the list
         """
-        return False
+
+        for path in excluded_paths:
+            if path in path:
+                return False
+        if path is None or excluded_paths is None or excluded_paths == []:
+            return True
+
+        return True
 
     def authorization_header(self, request=None) -> str:
         """ authorization_header method that returns None
