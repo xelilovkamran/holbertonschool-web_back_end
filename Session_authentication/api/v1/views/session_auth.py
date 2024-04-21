@@ -1,6 +1,6 @@
 from api.v1.views import app_views
 from flask import request, jsonify, make_response
-from typing import TypeVar
+from typing import TypeVar, List
 from models.user import User
 from os import getenv
 
