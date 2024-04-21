@@ -23,9 +23,9 @@ def login():
     if len(users) == 0:
         return jsonify({"error": "no user found for this email"}), 404
 
-    from api.v1.app import auth
     for user in users:
         if user.is_valid_password(pwd):
+            from api.v1.app import auth
             session_id = auth.create_session(user.id)
             SESSION_NAME = getenv('SESSION_NAME')
             response = make_response(user.to_json())
