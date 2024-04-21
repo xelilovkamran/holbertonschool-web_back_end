@@ -5,7 +5,8 @@
 from flask import request
 from api.v1.auth.session_auth import SessionAuth
 from os import getenv
-from datetime import datetime
+from datetime import datetime, timedelta
+from typing import Dict
 
 
 class SessionExpAuth(SessionAuth):
@@ -16,7 +17,14 @@ class SessionExpAuth(SessionAuth):
         """ Constructor
         """
         super().__init__()
-        self.session_duration = getenv("SESSION_DURATION", 0)
+        SESSION_DURATION = getenv('SESSION_DURATION', 0)
+
+        try:
+            SESSION_DURATION = int(SESSION_DURATION)
+        except Exception:
+            SESSION_DURATION = 0
+
+        self.session_duration = SESSION_DURATION
 
     def create_session(self, user_id=None):
         """ Create a Session ID
@@ -25,29 +33,33 @@ class SessionExpAuth(SessionAuth):
         if session_id is None:
             return None
 
-        self.user_id_by_session_id[session_id] = {
+        session_dict: Dict = {
             "user_id": user_id,
             "created_at": datetime.now()
         }
 
+        self.user_id_by_session_id[session_id] = session_dict
+
+        return session_id
+
     def user_id_for_session_id(self, session_id=None):
         """ Return a User ID based on a Session ID
         """
-        if session_id is None:
+        if session_id is None or session_id not in self.user_id_by_session_id:
             return None
 
-        if session_id not in self.user_id_by_session_id:
+        session_dictionary = self.user_id_by_session_id.get(session_id)
+
+        if self.session_duration <= 0 or session_dictionary is None:
+            return session_dictionary.get('user_id', None)
+
+        created_by = session_dictionary.get('created_at', None)
+        if created_by is None:
             return None
 
-        if self.session_duration <= 0:
-            return self.user_id_by_session_id[session_id]["user_id"]
+        expired_session = created_by + timedelta(seconds=self.session_duration)
 
-        if "created_at" not in self.user_id_by_session_id[session_id]:
+        if expired_session < datetime.now():
             return None
 
-        if ((datetime.now() - self.user_id_by_session_id
-             [session_id]["created_at"]).seconds > self.session_duration):
-            # del self.user_id_by_session_id[session_id]
-            return None
-
-        return self.user_id_by_session_id[session_id]["user_id"]
+        return session_dictionary.get('user_id', None)
