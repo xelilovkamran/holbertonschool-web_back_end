@@ -8,7 +8,7 @@ from os import getenv
 def login():
     """ POST /auth_session/login
     """
-    email= request.form.get("email")
+    email = request.form.get("email")
 
     if not email:
         return jsonify({"error": "email missing"}), 400
@@ -18,10 +18,14 @@ def login():
     if not pwd:
         return jsonify({"error": "password missing"}), 400
 
-    users = User.search({"email": email})
+    # try:
+    #     users = User.search({'email': email})
+    # except Exception:
+    #     return jsonify({"error": "no user found for this email"}), 404
 
+    users = User.search({"email": email})
     if len(users) == 0:
-        return jsonify({"error": "no user found for this email"}), 400
+        return jsonify({"error": "no user found for this email"}), 404
 
     from api.v1.app import auth
     for user in users:
