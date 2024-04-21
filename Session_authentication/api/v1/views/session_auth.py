@@ -28,7 +28,7 @@ def login():
     for user in users:
         if user.is_valid_password(pwd):
             session_id: str = auth.create_session(user.id)
-            SESSION_NAME = getenv('SESSION_NAME', "_my_session_id")
+            SESSION_NAME = getenv('SESSION_NAME')
             response = make_response(user.to_json())
             response.set_cookie(SESSION_NAME, session_id)
             return response
