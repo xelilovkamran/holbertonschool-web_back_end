@@ -1,35 +1,39 @@
 from api.v1.views import app_views
-from flask import request, jsonify, make_response
+from flask import request, jsonify
 from models.user import User
-from os import getenv
+import os
 
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
-def login():
-    """ POST /auth_session/login
+def login() -> str:
+    """
+    POST /auth_session/login
+    Returns the dictionary representation of the User
+    or error status code if the user can't be found
     """
     email = request.form.get("email")
-
-    if not email:
+    if not email or email == "":
         return jsonify({"error": "email missing"}), 400
 
-    pwd = request.form.get("password")
-
-    if not pwd:
+    password = request.form.get("password")
+    if not password or password == "":
         return jsonify({"error": "password missing"}), 400
 
-    users = User.search({"email": email})
-
-    if len(users) == 0:
+    try:
+        user_list = User.search({"email": email})
+        if not user_list:
+            return jsonify({"error": "no user found for this email"}), 404
+    except Exception:
         return jsonify({"error": "no user found for this email"}), 404
 
-    for user in users:
-        if user.is_valid_password(pwd):
-            from api.v1.app import auth
-            session_id = auth.create_session(user.id)
-            SESSION_NAME = getenv('SESSION_NAME')
-            response = make_response(user.to_json())
-            response.set_cookie(SESSION_NAME, session_id)
-            return response
+    user = user_list[0]
+    if not user.is_valid_password(password):
+        return jsonify({"error": "wrong password"}), 401
 
-    return jsonify({"error": "wrong password"}), 401
+    from api.v1.app import auth
+    session_id = auth.create_session(user.id)
+    cookie_name = os.getenv("SESSION_NAME")
+    response = jsonify(user.to_json())
+    response.set_cookie(cookie_name, session_id)
+
+    return response
