@@ -3,16 +3,14 @@
 """
 
 from api.v1.auth.auth import Auth
+from typing import Dict
 import uuid
 
 
 class SessionAuth(Auth):
     """ Session Authentication Class inherited from Auth
     """
-
-    def __init__(self):
-        self.user_id_by_session_id = {}
-        super().__init__()
+    user_id_by_session_id: Dict = {}
 
     def create_session(self, user_id: str = None) -> str:
         """ Create a Session ID
