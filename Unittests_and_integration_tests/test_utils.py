@@ -2,8 +2,8 @@
 """ Unittests for utils.py
 """
 
-from utils import access_nested_map
 import unittest
+from utils import access_nested_map
 from parameterized import parameterized
 
 
@@ -16,7 +16,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
-    def test_access_nested_map(self, nested_map, path, result_expec):
+    def test_access_nested_map(self, nested_map, path_map, result_expec):
         """ Test access_nested_map
         """
-        self.assertEqual(access_nested_map(nested_map, path), result_expec)
+        self.assertEqual(access_nested_map(nested_map, path_map), result_expec)
