@@ -69,7 +69,7 @@ class TestMemoize(unittest.TestCase):
 
             @memoize
             def a_property(self):
-                """decoraot
+                """decorator
                 """
                 return self.a_method()
 
