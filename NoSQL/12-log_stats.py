@@ -4,14 +4,30 @@
 
 from pymongo import MongoClient
 
-with MongoClient() as client:
-    collection = client.logs.nginx
-    print(f"{collection.find().count()} logs")
+
+def log_stats(mongo_collection):
+    """Prints some stats about Nginx logs stored in mongo_collection
+    """
+    print(f"{mongo_collection.count_documents({})} logs")
     print("Methods:")
-    print(f"\tmethod GET: {collection.find({'method': 'GET'}).count()}")
-    print(f"\tmethod POST: {collection.find({'method': 'POST'}).count()}")
-    print(f"\tmethod PUT: {collection.find({'method': 'PUT'}).count()}")
-    print(f"\tmethod PATCH: {collection.find({'method': 'PATCH'}).count()}")
-    print(f"\tmethod DELETE: {collection.find({'method': 'DELETE'}).count()}")
+    print(f"\tmethod GET: {mongo_collection.find({'method': 'GET'}).count()}")
     print(
-        f"{collection.find({'method': 'GET', "path": "/status"}).count()} status check")
+        f"\tmethod POST: {mongo_collection.find({'method': 'POST'}).count()}")
+    print(f"\tmethod PUT: {mongo_collection.find({'method': 'PUT'}).count()}")
+    print(
+        f"\tmethod PATCH: {mongo_collection
+                           .find({'method': 'PATCH'})
+                           .count()}")
+    print(
+        f"\tmethod DELETE: {mongo_collection
+                            .find({'method': 'DELETE'})
+                            .count()}")
+    print(
+        f"{mongo_collection
+           .find({'method': 'GET', "path": "/status"})
+           .count()} status check")
+
+
+if __name__ == "__main__":
+    collection = MongoClient('mongodb://127.0.0.1:27017').logs.nginx
+    log_stats(collection)
