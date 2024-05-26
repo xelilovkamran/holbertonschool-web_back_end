@@ -1,5 +1,5 @@
 // Update
-db.school.findOneAndUpdate(
+db.school.updateMany(
     { name: "Holberton school" },
-    { address: "972 Mission street" }
+    { name: "Holberton school", address: "972 Mission street" }
 );
