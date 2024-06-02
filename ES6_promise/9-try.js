@@ -10,7 +10,7 @@ function guardrail(mathFunction) {
     }
 
     queue.push(result);
-    queue.push("Guardrail was processed");
+    queue.push('Guardrail was processed');
 
     return queue;
 }
